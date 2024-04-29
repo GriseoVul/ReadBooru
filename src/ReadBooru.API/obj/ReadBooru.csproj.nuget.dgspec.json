@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\Files\\code\\Csharp\\ReadBooru\\src\\ReadBooru.csproj": {}
+    "E:\\Files\\code\\Csharp\\ReadBooru\\src\\ReadBooru.csproj": {}
   },
   "projects": {
-    "e:\\Files\\code\\Csharp\\ReadBooru\\src\\ReadBooru.csproj": {
+    "E:\\Files\\code\\Csharp\\ReadBooru\\src\\ReadBooru.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\Files\\code\\Csharp\\ReadBooru\\src\\ReadBooru.csproj",
+        "projectUniqueName": "E:\\Files\\code\\Csharp\\ReadBooru\\src\\ReadBooru.csproj",
         "projectName": "ReadBooru",
-        "projectPath": "e:\\Files\\code\\Csharp\\ReadBooru\\src\\ReadBooru.csproj",
+        "projectPath": "E:\\Files\\code\\Csharp\\ReadBooru\\src\\ReadBooru.csproj",
         "packagesPath": "C:\\Users\\white\\.nuget\\packages\\",
-        "outputPath": "e:\\Files\\code\\Csharp\\ReadBooru\\src\\obj\\",
+        "outputPath": "E:\\Files\\code\\Csharp\\ReadBooru\\src\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\white\\AppData\\Roaming\\NuGet\\NuGet.Config",

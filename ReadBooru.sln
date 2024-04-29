@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadBooru", "src\ReadBooru.csproj", "{14BA5194-DE2C-4E36-8C99-F7B2077BC71D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadBooru", "src\ReadBooru.API\ReadBooru.csproj", "{14BA5194-DE2C-4E36-8C99-F7B2077BC71D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ReadBooru")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0c317dcae36c86549db32b01c39f150ee7f65981")]
 [assembly: System.Reflection.AssemblyProductAttribute("ReadBooru")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ReadBooru")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
