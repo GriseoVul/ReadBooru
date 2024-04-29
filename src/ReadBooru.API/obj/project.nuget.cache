@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TcNKASnwCrtRJPai0Hgdc6nDULJPCXozK8YKFpaFP8G2nFkO8OT9HZOC7zu/PDxGN0K11pNjCdQARSZlKoyH0A==",
+  "dgSpecHash": "rOvfzb5qHRmzHAIZdtJ/6q8zjGHKLON0MyqakHSmmAbgXFPhCaYiY2VP1dzfMEwtJwUEMkXqrIJndSDxOBhgXw==",
   "success": true,
-  "projectFilePath": "E:\\Files\\code\\Csharp\\ReadBooru\\src\\ReadBooru.csproj",
+  "projectFilePath": "e:\\Files\\code\\Csharp\\ReadBooru\\src\\ReadBooru.API\\ReadBooru.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\white\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\white\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.4\\microsoft.aspnetcore.authentication.jwtbearer.8.0.4.nupkg.sha512",
