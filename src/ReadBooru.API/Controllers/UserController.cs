@@ -7,20 +7,20 @@ namespace ReadBooru.API.Controllers;
 
 [Route("account")]
 [ApiController]
-public class UserController(IUserService userService, IJwtService jwtService) : ControllerBase
+public class UserController(IUserService UserService, IJwtService JwtService) : ControllerBase
 {
-    private readonly IUserService _userService = userService;
-    private readonly IJwtService _jwtService = jwtService;
+    private readonly IUserService userService = UserService;
+    private readonly IJwtService jwtService = JwtService;
 
     [HttpPost("login")]
     [AllowAnonymous]
     public IActionResult Login(string Name, string Password)
     {
-        var storedUser = _userService.GetUser(Name);
-        if (!_userService.IsAuthenticated(Password, storedUser?.PasswordHash))
+        var storedUser = userService.GetUser(Name);
+        if (!userService.IsAuthenticated(Password, storedUser?.PasswordHash))
             return Unauthorized();
 
-        var tokenString = _jwtService.GenerateToken(storedUser);
+        var tokenString = jwtService.GenerateToken(storedUser);
         return Ok(new { token = tokenString });
     }
     

@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+//adding authentication field to swagger
 builder.Services.AddSwaggerGen( opt => 
 {
     opt.SwaggerDoc("v1", new OpenApiInfo{Title="Readbooru", Version="v1"});
@@ -40,6 +41,11 @@ builder.Services.AddSwaggerGen( opt =>
     });
 });
 builder.Services.AddScoped<IPostRepo, PostRepo>();
+builder.Services.AddScoped<IImageRepo, ImageRepo>();
+
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IJwtService, JwtService>();
+
 builder.Services.AddControllers();
 
 
@@ -76,8 +82,7 @@ builder.Services.AddAuthentication(options=>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<IJwtService, JwtService>();
+
 
 var app = builder.Build();
 
@@ -100,6 +105,10 @@ app.UseRouting();
 app.MapControllerRoute(
     name: "default",
     pattern:"{controller=post}"
+);
+app.MapControllerRoute(
+    name: "image",
+    pattern:"{controller=image}"
 );
 app.MapControllerRoute(
     name: "account",

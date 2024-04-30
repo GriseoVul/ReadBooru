@@ -23,6 +23,7 @@ public class PostController : ControllerBase
     [AllowAnonymous]
     public async Task<IEnumerable<PostModel>> Get()
     {
+        
         return await postRepo.GetAllAsync();
     }
 
@@ -42,7 +43,7 @@ public class PostController : ControllerBase
     {
         var id = await postRepo.AddAsync(entity);
         if(id != default)
-            return CreatedAtRoute("findone", new {id = id}, entity);
+            return CreatedAtRoute("findone", new { id }, entity);
         else
             return BadRequest();
     }
@@ -63,7 +64,7 @@ public class PostController : ControllerBase
         if(result > 0)
             return NoContent();
         else
-            return NotFound();
+            return Ok();
     }
 
 }
