@@ -1,10 +1,12 @@
-﻿using ReadBooru.API.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using ReadBooru.API.Models;
 namespace ReadBooru.API.DAL;
 
 public interface IImageRepo
 {
     Task<IEnumerable<ImageModel>> GetAllAsync();
-    Task<ImageModel?> GetAsync(int id);
+    Task<IActionResult> GetAsync(int id);
+    Task<IActionResult> GetNoImage();
     Task<int> AddAsync(ImageModel entity);
     Task<int> UpdateAsync(ImageModel entity);
     Task<int> DeleteAsync(int id);
