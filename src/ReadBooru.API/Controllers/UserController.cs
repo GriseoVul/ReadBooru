@@ -14,9 +14,9 @@ public class UserController(IUserService UserService, IJwtService JwtService) : 
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public IActionResult Login(string Name, string Password)
+    public async Task<IActionResult> Login(string Name, string Password)
     {
-        var storedUser = userService.GetUser(Name);
+        var storedUser = await userService.GetUser(Name);
         if (!userService.IsAuthenticated(Password, storedUser?.PasswordHash))
             return Unauthorized();
 
@@ -26,8 +26,8 @@ public class UserController(IUserService UserService, IJwtService JwtService) : 
     
     [HttpPost("register")]
     [AllowAnonymous]
-    public IActionResult Register(string Name, string Password)
+    public async Task<int> Register(string Name, string PasswordHash)
     {
-        throw new NotImplementedException();
+        return await userService.NewUser(Name, PasswordHash);
     }
 }

@@ -2,17 +2,10 @@
 
 namespace ReadBooru.API.Models;
 
-public class AccountModel
+public class AccountModel(int id, string name, string passwordHash, string role)
 {
-    public int Id{ get; set; }
-    public string Name { get; set;}
-    public string PasswordHash { get; set;}
-    public string Role{get; set;}
-    public AccountModel(int id, string name, string passwordHash, string role)
-    {
-        Id = id;
-        Name = name;
-        PasswordHash = passwordHash;
-        Role = role;
-    }
+    public int Id { get; set; } = id;
+    public string Name { get; set; } = name;
+    public string PasswordHash { get; set; } = passwordHash;
+    public string Role { get; set; } = role;
 }
