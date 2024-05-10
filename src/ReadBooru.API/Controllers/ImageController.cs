@@ -2,16 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using ReadBooru.API.DAL;
 using ReadBooru.API.Models;
+using Microsoft.EntityFrameworkCore.Design;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ReadBooru;
 
 [ApiController]
 [Route("image")]
 [Authorize]
-public class ImageController(ILogger<ImageController> Logger, IImageRepo ImageRepo) : ControllerBase
+public class ImageController(ILogger<ImageController> Logger, IImageRepo ImageRepo, IConfiguration configuration) : ControllerBase
 {
     private  readonly ILogger<ImageController> logger = Logger;
     private readonly IImageRepo imageRepo = ImageRepo;
+    private readonly IConfiguration _config = configuration;
 
     [HttpGet]
     [AllowAnonymous]
@@ -20,20 +23,60 @@ public class ImageController(ILogger<ImageController> Logger, IImageRepo ImageRe
         return await imageRepo.GetAllAsync();
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = "imageFindOne")]
     [AllowAnonymous]
-    public async Task<ActionResult<ImageModel>> Get(int id)
+    public async Task<IActionResult> Get(int id)
     {
-        var result = await imageRepo.GetAsync(id);
-
-
-        return result == default ? NotFound() : Ok(result);
+        return await imageRepo.GetAsync(id);
     }
-    [HttpPost]
-    public async Task<ActionResult<ImageModel>> Post(ImageModel image)
+
+    // figure out about paths and parameters
+    // conflict    
+    // [HttpGet("{id}",Name = "imageFindSeveral")]
+    // public async Task<IEnumerable<ImageModel>> GetCountFromIndex(int id, [FromQuery] int count)
+    // {
+    //     return await imageRepo.GetSeveralFrom(id, count);
+    // }
+
+    //delete this
+    [HttpGet("/test")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetNoImage()
     {
-        var id = await imageRepo.AddAsync(image);
-        return id == default ? NotFound() : CreatedAtRoute("findone", new {id}, image);
+        return await imageRepo.GetNoImage();
+    }
+
+    //TODO move implementation and do path validation in ImageRepo
+    [HttpPost(Name = "saveImage")]
+    public async Task<ActionResult<ImageModel>> Post(List<IFormFile> file)
+    {
+        long size = file.Sum(f => f.Length);
+        var id = 0; 
+        
+        foreach (IFormFile formFile in file)
+        {
+            if (formFile.Length > 0)
+            {   
+                var storageFolder = _config["StoredFilePath"];
+                var filePath = Path.Combine(storageFolder, Path.GetRandomFileName() + ".png");
+                
+             
+                using (var FileStream = new FileStream(filePath, FileMode.CreateNew))
+                using (var stream = new MemoryStream())
+                {
+                    await formFile.CopyToAsync(stream);
+                    id = await imageRepo.AddAsync(new ImageModel{
+                        Id=0, 
+                        File=filePath, 
+                        Bytes=stream.ToArray()
+                    });
+                }
+            }
+        }
+
+        //do path validation
+
+        return id == default ? NotFound() : CreatedAtRoute("saveImage", new {id});
     }
     [HttpDelete("{id}")]
     public async Task<ActionResult<ImageModel>> Delete(int id)

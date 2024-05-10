@@ -38,12 +38,12 @@ public class PostController : ControllerBase
             return NotFound();
     }
 
-    [HttpPost]
+    [HttpPost(Name = "createPost")]
     public async Task<ActionResult<PostModel>> Insert(PostModel entity)
     {
         var id = await postRepo.AddAsync(entity);
         if(id != default)
-            return CreatedAtRoute("findone", new { id }, entity);
+            return CreatedAtRoute("createPost", new { id }, entity);
         else
             return BadRequest();
     }

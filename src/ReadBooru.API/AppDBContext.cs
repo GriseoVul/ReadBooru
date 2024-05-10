@@ -14,15 +14,15 @@ public class AppDBContext : DbContext
     public DbSet<AccountModel> Users { get; set; }
     public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
     {
-        try{
-            var databaseCreator = (Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator);
-            databaseCreator.CreateTables();
-        }
-        catch( MySqlException )
-        {
+        // try{
+        //     var databaseCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+        //     databaseCreator?.CreateTables();
+        // }
+        // catch( MySqlException )
+        // {
             
-        }
-        Database.EnsureCreated();
+        // }
+        // Database.EnsureCreated();
     }
 
 }
