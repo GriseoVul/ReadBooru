@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReadBooru.API.DAL;
 using ReadBooru.API.Models;
 using Microsoft.EntityFrameworkCore.Design;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ReadBooru;
 
@@ -24,12 +25,20 @@ public class ImageController(ILogger<ImageController> Logger, IImageRepo ImageRe
 
     [HttpGet("{id}", Name = "imageFindOne")]
     [AllowAnonymous]
-    public async Task<ActionResult> Get(int id)
+    public async Task<IActionResult> Get(int id)
     {
-        var result = await imageRepo.GetAsync(id);
-
-        return result == default ? NotFound() : Ok(result);
+        return await imageRepo.GetAsync(id);
     }
+
+    // figure out about paths and parameters
+    // conflict    
+    // [HttpGet("{id}",Name = "imageFindSeveral")]
+    // public async Task<IEnumerable<ImageModel>> GetCountFromIndex(int id, [FromQuery] int count)
+    // {
+    //     return await imageRepo.GetSeveralFrom(id, count);
+    // }
+
+    //delete this
     [HttpGet("/test")]
     [AllowAnonymous]
     public async Task<IActionResult> GetNoImage()
@@ -37,6 +46,7 @@ public class ImageController(ILogger<ImageController> Logger, IImageRepo ImageRe
         return await imageRepo.GetNoImage();
     }
 
+    //TODO move implementation and do path validation in ImageRepo
     [HttpPost(Name = "saveImage")]
     public async Task<ActionResult<ImageModel>> Post(List<IFormFile> file)
     {
@@ -58,7 +68,7 @@ public class ImageController(ILogger<ImageController> Logger, IImageRepo ImageRe
                     id = await imageRepo.AddAsync(new ImageModel{
                         Id=0, 
                         File=filePath, 
-                        bytes=stream.ToArray()
+                        Bytes=stream.ToArray()
                     });
                 }
             }

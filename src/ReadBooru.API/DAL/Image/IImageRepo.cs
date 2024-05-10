@@ -6,6 +6,7 @@ public interface IImageRepo
 {
     Task<IEnumerable<ImageModel>> GetAllAsync();
     Task<IActionResult> GetAsync(int id);
+    Task<IEnumerable<ImageModel>> GetSeveralFrom(int id, int count);
     Task<IActionResult> GetNoImage();
     Task<int> AddAsync(ImageModel entity);
     Task<int> UpdateAsync(ImageModel entity);
