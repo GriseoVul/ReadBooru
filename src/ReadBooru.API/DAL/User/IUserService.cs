@@ -4,6 +4,7 @@ namespace ReadBooru.API.DAL;
 
 public interface IUserService
 {
-    AccountModel? GetUser(string? username);
+    Task<AccountModel?> GetUser(string? username);
     bool IsAuthenticated(string? password, string? PasswordHash);
+    Task<int> NewUser(string Username, string PasswordHash);
 }

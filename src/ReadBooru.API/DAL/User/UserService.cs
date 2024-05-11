@@ -1,25 +1,18 @@
 ﻿using ReadBooru.API.Models;
 using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 namespace ReadBooru.API.DAL;
 
-public class UserService : IUserService
+public class UserService(AppDBContext dBContext) : IUserService
 {
-    private readonly List<AccountModel> _accounts;
-    public UserService()
-    {   
-        //TODO link this with DB!
-        _accounts =
-        [
-            new(0, "User1", BCrypt.Net.BCrypt.HashPassword("Password1"), "User"),
-            new(1, "Admin1", BCrypt.Net.BCrypt.HashPassword("AdminPass1"), "Admin")
-        ];
+    private readonly AppDBContext _dbContext = dBContext;
 
-    }
-    public AccountModel? GetUser(string? username)
+    public Task<AccountModel?> GetUser(string? username)
     {
         ArgumentNullException.ThrowIfNull(username);
 
-        return _accounts.SingleOrDefault(u => u.Name == username);
+        return _dbContext.Users.FirstOrDefaultAsync(x => x.Name == username);
+        // return _accounts.SingleOrDefault(u => u.Name == username);
     }
     public bool IsAuthenticated(string? password, string? passwordHash)
     {
@@ -27,5 +20,13 @@ public class UserService : IUserService
         ArgumentNullException.ThrowIfNullOrEmpty(passwordHash);
 
         return BCrypt.Net.BCrypt.Verify(password, passwordHash);
+    }
+
+    public async Task<int> NewUser(string Username, string Password)
+    {
+        //
+        _dbContext.Users.Add(new AccountModel (0,Username, BCrypt.Net.BCrypt.HashPassword(Password),"User") );
+
+        return  await _dbContext.SaveChangesAsync();
     }
 }
