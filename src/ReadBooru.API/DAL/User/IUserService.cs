@@ -6,5 +6,5 @@ public interface IUserService
 {
     Task<AccountModel?> GetUser(string? username);
     bool IsAuthenticated(string? password, string? PasswordHash);
-    Task<int> NewUser(string Username, string PasswordHash);
+    Task<bool> NewUser(string Username, string PasswordHash);
 }

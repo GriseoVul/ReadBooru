@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReadBooru.API.Models;
 using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ReadBooru.API.DAL;
 
@@ -32,9 +33,13 @@ public class ImageRepo (AppDBContext dBContext): IImageRepo
     }
 
     //implement logic for this
-    public async Task<IEnumerable<ImageModel>> GetSeveralFrom(int id, int count)
+    public async Task<IEnumerable<ImageModel>> GetSeveralFrom(int id, int count = 1)
     {
-        return await _dbContext.ImageModels.ToListAsync();
+        List<ImageModel> images = await _dbContext.ImageModels.OrderBy( x => x.Id )
+        .Where(x => x.Id >= id)
+        .Take(count)
+        .ToListAsync();
+        return images;
     }
 
     public async Task<IActionResult> GetNoImage()

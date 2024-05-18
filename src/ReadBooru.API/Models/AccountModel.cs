@@ -2,10 +2,12 @@
 
 namespace ReadBooru.API.Models;
 
-public class AccountModel(int id, string name, string passwordHash, string role)
+public class AccountModel 
 {
-    public int Id { get; set; } = id;
-    public string Name { get; set; } = name;
-    public string PasswordHash { get; set; } = passwordHash;
-    public string Role { get; set; } = role;
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string PasswordHash { get; set; }
+    public string Role { get; set; }
+    public ICollection<ImageModel> Images{ get; set; } = [];
+    public ICollection<PostModel> Posts{ get; set; } = [];
 }

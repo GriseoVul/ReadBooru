@@ -23,20 +23,19 @@ public class ImageController(ILogger<ImageController> Logger, IImageRepo ImageRe
         return await imageRepo.GetAllAsync();
     }
 
-    [HttpGet("{id}", Name = "imageFindOne")]
-    [AllowAnonymous]
-    public async Task<IActionResult> Get(int id)
-    {
-        return await imageRepo.GetAsync(id);
-    }
-
-    // figure out about paths and parameters
-    // conflict    
-    // [HttpGet("{id}",Name = "imageFindSeveral")]
-    // public async Task<IEnumerable<ImageModel>> GetCountFromIndex(int id, [FromQuery] int count)
+    // [HttpGet("{id}", Name = "imageFindOne")]
+    // [AllowAnonymous]
+    // public async Task<IActionResult> Get(int id)
     // {
-    //     return await imageRepo.GetSeveralFrom(id, count);
+    //     return await imageRepo.GetAsync(id);
     // }
+
+    [HttpGet("{id}", Name = "imageFindSeveral")]
+    [AllowAnonymous]
+    public async Task<IEnumerable<ImageModel>> GetCountFromIndex(int id, [FromQuery] int count)
+    {
+        return await imageRepo.GetSeveralFrom(id, count);
+    }
 
     //delete this
     [HttpGet("/test")]
@@ -60,7 +59,6 @@ public class ImageController(ILogger<ImageController> Logger, IImageRepo ImageRe
                 var storageFolder = _config["StoredFilePath"];
                 var filePath = Path.Combine(storageFolder, Path.GetRandomFileName() + ".png");
                 
-             
                 using (var FileStream = new FileStream(filePath, FileMode.CreateNew))
                 using (var stream = new MemoryStream())
                 {

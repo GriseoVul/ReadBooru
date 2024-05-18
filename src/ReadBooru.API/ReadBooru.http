@@ -1,4 +1,4 @@
-ReadBooru@src_HostAddress = http://localhost:5122
+ReadBooru@src_HostAddress = http://0.0.0.0:5122
 
 GET {{src_HostAddress}}/post/
 Accept: application/json

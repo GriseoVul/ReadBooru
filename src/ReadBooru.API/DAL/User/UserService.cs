@@ -22,11 +22,23 @@ public class UserService(AppDBContext dBContext) : IUserService
         return BCrypt.Net.BCrypt.Verify(password, passwordHash);
     }
 
-    public async Task<int> NewUser(string Username, string Password)
+    public async Task<bool> NewUser(string Username, string Password)
     {
         //
-        _dbContext.Users.Add(new AccountModel (0,Username, BCrypt.Net.BCrypt.HashPassword(Password),"User") );
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Name == Username);
+        
+        if (user != default)
+            return false;
+        var salt = BCrypt.Net.BCrypt.GenerateSalt(10);
 
-        return  await _dbContext.SaveChangesAsync();
+        _dbContext.Users.Add(new AccountModel()
+        {
+            Id=0,
+            Name=Username, 
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(Password),
+            Role = "User"
+        });
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 }
