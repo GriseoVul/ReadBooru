@@ -24,5 +24,14 @@ public class AppDBContext : DbContext
         // }
         // Database.EnsureCreated();
     }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        // builder.Entity<ImageModel>()
+        // .Property(e => e.AuthorId)
+        // .HasDefaultValue(null);
 
+        // builder.Entity<ImageModel>()
+        // .Property(e => e.Author)
+        // .HasDefaultValue(null);
+    }
 }

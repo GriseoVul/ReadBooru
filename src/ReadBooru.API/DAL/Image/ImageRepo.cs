@@ -1,16 +1,15 @@
-﻿using System.Net.Http.Headers;
-using System.IO;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ReadBooru.API.Models;
-using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
+
+using System.Security.Principal;
 
 namespace ReadBooru.API.DAL;
 
-public class ImageRepo (AppDBContext dBContext): IImageRepo
+public class ImageRepo (AppDBContext dBContext, IConfiguration configuration): IImageRepo
 {
     private readonly AppDBContext _dbContext = dBContext;
-
+    private readonly IConfiguration _config = configuration;
     public async Task<IEnumerable<ImageModel>> GetAllAsync()
     {
         return await _dbContext.ImageModels.ToListAsync();
@@ -32,9 +31,13 @@ public class ImageRepo (AppDBContext dBContext): IImageRepo
     }
 
     //implement logic for this
-    public async Task<IEnumerable<ImageModel>> GetSeveralFrom(int id, int count)
+    public async Task<IEnumerable<ImageModel>> GetSeveralFrom(int id, int count = 1)
     {
-        return await _dbContext.ImageModels.ToListAsync();
+        List<ImageModel> images = await _dbContext.ImageModels.OrderBy( x => x.Id )
+        .Where(x => x.Id >= id)
+        .Take(count)
+        .ToListAsync();
+        return images;
     }
 
     public async Task<IActionResult> GetNoImage()
@@ -49,6 +52,42 @@ public class ImageRepo (AppDBContext dBContext): IImageRepo
         _dbContext.Add(entity);
         return await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<int> AddSeveral(List<IFormFile> files, IIdentity user)
+    {
+        long size = files.Sum(f => f.Length);
+        
+        AccountModel? Author = _dbContext.Users.FirstOrDefault(u => u.Name == user.Name);
+        if(Author == default)
+            throw new ArgumentException("User is incorrect");
+            
+        List<ImageModel> images = [];
+        foreach (IFormFile file in files)
+        {
+            if (file.Length > 0)
+            {   
+                string Name = Path.GetRandomFileName() + ".png";
+                var storageFolder = _config["StoredFilePath"];
+                var filePath = Path.Combine(storageFolder, Name);
+                
+                using (var FileStream = new FileStream(filePath, FileMode.CreateNew))
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    images.Add(new ImageModel{
+                        Id=0, 
+                        File=filePath, 
+                        Bytes=stream.ToArray(),
+                        Name=Name,
+                        Author = Author
+                    });
+                }
+            }
+        }
+        await _dbContext.AddRangeAsync(images);
+        return await _dbContext.SaveChangesAsync();
+    }
+
     public async Task<int> UpdateAsync(ImageModel entity)
     {
         try 
