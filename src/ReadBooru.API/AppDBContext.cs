@@ -8,6 +8,7 @@ namespace ReadBooru.API;
 public class AppDBContext : DbContext
 {
     public DbSet<PostModel> PostModels{ get; set; }
+    public DbSet<ChapterModel> ChapterModels{ get; set; }
     public DbSet<ImageModel> ImageModels{ get; set; }
     public DbSet<TagModel> TagModels{ get; set; }
 
@@ -26,12 +27,11 @@ public class AppDBContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        // builder.Entity<ImageModel>()
-        // .Property(e => e.AuthorId)
-        // .HasDefaultValue(null);
-
-        // builder.Entity<ImageModel>()
-        // .Property(e => e.Author)
-        // .HasDefaultValue(null);
+        //many posts to many tags link
+        builder.Entity<PostModel>()
+        .HasMany(tags => tags.Tags)
+        .WithMany(posts => posts.Posts)
+        .UsingEntity(j => j.ToTable("PostsTags"));
+    
     }
 }
